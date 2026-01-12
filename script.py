@@ -39,7 +39,7 @@ class MyScript(Script):
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(ip, username=usuario, password=senha, look_for_keys=False, port=int(porta))
 
-        pdr = open('/opt/netbox/netbox/scripts/pdr.txt')
+        pdr = open('pdr.txt')
         pdrLinha = pdr.readlines()
 
         for linha in pdrLinha:
