@@ -33,7 +33,7 @@ class MyScript(Script):
     def run(self, data, commit):
 
         diretorio = os.path.dirname(os.path.abspath(__file__))
-        diretorioPdr = os.path.join(diretorio, 'pdr.txt')
+        diretorioPdr = os.path.join(diretorio, 'scripts/pdr.txt')
 
         ip = data['ip']
         usuario = data['usuario']
