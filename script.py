@@ -1,5 +1,6 @@
 from extras.scripts import Script, StringVar, IntegerVar
 import paramiko
+import time
 import os
 
 
@@ -185,6 +186,7 @@ class MyScript(Script):
 ]
 
         for linha in comandos:
+            time.sleep(0.5)
             stdin, stdout, stderr = client.exec_command(f'/{linha}')
 
         client.close()
