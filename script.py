@@ -1,5 +1,6 @@
 from extras.scripts import Script, StringVar, IntegerVar
 import paramiko
+import os
 
 
 class MyScript(Script):
@@ -30,6 +31,10 @@ class MyScript(Script):
     )
 
     def run(self, data, commit):
+
+        diretorio = os.path.dirname(os.path.abspath(__file__))
+        diretorioPdr = os.path.join(diretorio, 'pdr.txt')
+
         ip = data['ip']
         usuario = data['usuario']
         senha = data['senha']
@@ -39,7 +44,7 @@ class MyScript(Script):
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(ip, username=usuario, password=senha, look_for_keys=False, port=int(porta))
 
-        pdr = open('pdr.txt')
+        pdr = open(diretorioPdr)
         pdrLinha = pdr.readlines()
 
         for linha in pdrLinha:
