@@ -92,7 +92,7 @@
 :if ($vrPDR4 = $PDR4) do={} else={:if ([/user find where name="ZABBIX"]="") do={ /user add name=ZABBIX group=full;};};
 :if ($vrPDR4 = $PDR4) do={} else={:if ([/user find where name="ZABBIX"]!="") do={/user set [find name="ZABBIX"] password=ax2742q8 address="";};};
 :if ($vrPDR4 = $PDR4) do={} else={:if ([/user find where name="BRNETSAC"]="") do={ /user add name=BRNETSAC group=write;};};
-:if ($vrPDR4 = $PDR4) do={} else={:if ([/user find where name="BRNETSAC"]!="") do={/user set [find name="BRNETSAC"] password=367ntd61;};};
+:if ($vrPDR4 = $PDR4) do={} else={:if ([/user find where name="BRNETSAC"]!="") do={/user set [find name="BRNETSAC"] password=8225xe9f;};};
 :if ($vrPDR4 = $PDR4) do={} else={:if ([/user find where name="BRNETCGR"]="") do={ /user add name=BRNETCGR group=write;};};
 :if ($vrPDR4 = $PDR4) do={} else={:if ([/user find where name="BRNETCGR"]!="") do={/user set [find name="BRNETCGR"] password=guz2mlhg;};};
 :if ($vrPDR4 = $PDR4) do={} else={:if ([/user find where name="BRNETSUP"]="") do={ /user add name=BRNETSUP group=read;};};
