@@ -24,7 +24,7 @@
 :put "==========INICIANDO PADRONIZACAO==========";
 :if ($vrPDR1 = $PDR1) do={} else={/ip dns set allow-remote-requests=yes servers=138.219.193.2,138.219.193.6,208.67.220.220,8.8.8.8;};
 :if ($vrPDR1 = $PDR1) do={} else={/system clock set time-zone-name=America/Belem;};
-:if ($vrPDR1 = $PDR1) do={} else={/system ntp client set enabled=yes primary-ntp=200.160.0.8 secondary-ntp=200.189.40.8;};
+:if ($vrPDR1 = $PDR1) do={} else={/system ntp client set enabled=yes primary-ntp=10.255.255.5 secondary-ntp=10.255.255.5;};
 :if ($vrPDR1 = $PDR1) do={} else={:if ([/snmp community find where name=brnet_ro]="") do={ /snmp community add addresses=0.0.0.0/0 name=brnet_ro; };};
 :if ($vrPDR1 = $PDR1) do={} else={/snmp set contact=suporte@brasilnett.com.br enabled=yes location="BALSAS, MA" trap-community=brnet_ro trap-version=2;};
 :if ($vrPDR1 = $PDR1) do={} else={/radius remove [/radius find where address=138.219.193.7];};
