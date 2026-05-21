@@ -1,38 +1,33 @@
-
 from extras.scripts import Script, StringVar, IntegerVar
 import paramiko
 import os
 
 
-class PadronizarEquipamento(Script):
-    class Meta:
-        name = "Padronização de Equipamento de Rede"
-        description = "Aplica configurações padrão BrasilNET."
-        commit_default = False
+class MyScript(Script):
+    class Meta(Script.Meta):
+        name = 'Padronização'
+        description = 'Padronizador de equipamentos'
+        field_order = ['ip', 'usuario', 'senha', 'porta']
 
-    ip_address = StringVar(
-        description="Endereço IP",
-        label="IP do Equipamento",
-        required=True
+    ip = StringVar(
+        label='IP',
+        description='IP do equipamento',
     )
 
-    port = IntegerVar(
-        description="Porta de acesso (ex: 22 para SSH)",
-        label="Porta de Acesso",
-        default=22,
-        required=True
+    usuario = StringVar(
+        label='Usuario',
+        description='Insira o usuário',
     )
 
-    username = StringVar(
-        description="Usuário",
-        label="Usuário",
-        required=True
+    senha = StringVar(
+        label='Senha',
+        description='Senha do equipamento',
+        required=False,
     )
 
-    password = StringVar(
-        description="Senha",
-        label="Senha",
-        required=True
+    porta = StringVar(
+        label='Porta',
+        description='Porta de acesso SSH',
     )
 
     def run(self, data, commit):
@@ -40,10 +35,10 @@ class PadronizarEquipamento(Script):
         diretorio = os.path.dirname(os.path.abspath(__file__))
         diretorioPdr = os.path.join(diretorio, 'scripts/pdr.txt')
 
-        ip = data.get('ip_address')
-        porta = data.get('port')
-        usuario = data.get('username')
-        senha = data.get('password')
+        ip = data['ip']
+        usuario = data['usuario']
+        senha = data['senha']
+        porta = data['porta']
 
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -56,5 +51,3 @@ class PadronizarEquipamento(Script):
             stdin, stdout, stderr = client.exec_command(linha)
 
         client.close()
-
-        return f"Processo de padronização concluído para o IP: {ip}"
