@@ -7,7 +7,7 @@ class PadronizarEquipamento(Script):
     class Meta:
         name = "Padronização de Equipamento de Rede"
         description = "Aplica configurações padrão BrasilNET."
-        commit_default = False
+        commit_default = True
 
     ip_address = StringVar(
         description="Endereço IP",
