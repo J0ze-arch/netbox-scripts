@@ -1,3 +1,6 @@
+from asyncio import start_server
+from os import system
+
 from extras.scripts import Script, StringVar, IntegerVar
 import paramiko
 import os
@@ -64,6 +67,8 @@ class PadronizarEquipamento(Script):
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             client.connect(ip, username=usuario, password=senha, look_for_keys=False, port=int(porta))
 
+            modelo = client.exec_command('system routerboard print')
+
             pdr = open(diretorioPdr)
             pdrLinha = pdr.readlines()
 
@@ -71,7 +76,7 @@ class PadronizarEquipamento(Script):
                 stdin, stdout, stderr = client.exec_command(linha)
 
             client.close()
-
+            print(modelo)
             return f"Processo de padronização concluído para o IP: {ip}"
 
         except Exception as e:
