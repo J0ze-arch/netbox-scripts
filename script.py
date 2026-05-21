@@ -3,31 +3,35 @@ import paramiko
 import os
 
 
-class MyScript(Script):
-    class Meta(Script.Meta):
-        name = 'Padronização'
-        description = 'Padronizador de equipamentos'
-        field_order = ['ip', 'usuario', 'senha', 'porta']
+class PadronizarEquipamento(Script):
+    class Meta:
+        name = "Padronização de Equipamento de Rede"
+        description = "Aplica configurações padrão BrasilNET."
+        commit_default = False
 
-    ip = StringVar(
-        label='IP',
-        description='IP do equipamento',
+    ip_address = StringVar(
+        description="Endereço IP",
+        label="IP do Equipamento",
+        required=True
     )
 
-    usuario = StringVar(
-        label='Usuario',
-        description='Insira o usuário',
+    port = IntegerVar(
+        description="Porta de acesso (ex: 22 para SSH)",
+        label="Porta de Acesso",
+        default=22,
+        required=True
     )
 
-    senha = StringVar(
-        label='Senha',
-        description='Senha do equipamento',
-        required=False,
+    username = StringVar(
+        description="Usuário",
+        label="Usuário",
+        required=True
     )
 
-    porta = StringVar(
-        label='Porta',
-        description='Porta de acesso SSH',
+    password = StringVar(
+        description="Senha",
+        label="Senha",
+        required=True
     )
 
     def run(self, data, commit):
@@ -35,19 +39,37 @@ class MyScript(Script):
         diretorio = os.path.dirname(os.path.abspath(__file__))
         diretorioPdr = os.path.join(diretorio, 'scripts/pdr.txt')
 
-        ip = data['ip']
-        usuario = data['usuario']
-        senha = data['senha']
-        porta = data['porta']
+        ip = data.get('ip_address')
+        porta = data.get('port')
+        usuario = data.get('username')
+        senha = data.get('password')
 
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(ip, username=usuario, password=senha, look_for_keys=False, port=int(porta))
+        self.log_info(f"Iniciando tentativa de conexão em {ip}:{porta} com o usuário '{usuario}'...")
 
-        pdr = open(diretorioPdr)
-        pdrLinha = pdr.readlines()
+        try:
+            client = paramiko.SSHClient()
+            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            client.connect(ip, username=usuario, password=senha, look_for_keys=False, port=int(porta))
 
-        for linha in pdrLinha:
-            stdin, stdout, stderr = client.exec_command(linha)
+            pdr = open(diretorioPdr)
+            pdrLinha = pdr.readlines()
 
-        client.close()
+            for linha in pdrLinha:
+                stdin, stdout, stderr = client.exec_command(linha)
+
+            client.close()
+
+            sucesso_na_configuracao = True
+
+            if sucesso_na_configuracao:
+                # 2. Mensagem de sucesso (aparece em verde na interface do NetBox)
+                self.log_success(f"Equipamento padronizado com sucesso!")
+            else:
+                self.log_failure(f"Falha ao aplicar as configurações.")
+
+        except Exception as e:
+            # Em caso de erro, exibe o problema na tela
+            self.log_failure(f"Ocorreu um erro durante a execução: {str(e)}")
+
+        # 3. O retorno da função run() aparece como a "Mensagem Final" do Job na tela do NetBox
+        return f"Processo de padronização concluído para o IP: {ip}"
