@@ -44,6 +44,21 @@ class PadronizarEquipamento(Script):
         usuario = data.get('username')
         senha = data.get('password')
 
+        self.log_info("### 📋 Resumo da Solicitação")
+
+        tabela_dados = (
+            f"| Parâmetro | Valor Informado |\n"
+            f"| :--- | :--- |\n"
+            f"| **IP do Dispositivo** | `{ip}` |\n"
+            f"| **Porta de Conexão** | `{porta}` |\n"
+            f"| **Usuário Utilizado** | `{usuario}` |\n"
+        )
+        self.log_info(tabela_dados)
+        self.log_info("---")  # Linha horizontal separadora
+
+        # --- 2. LOGS DE EXECUÇÃO (Usando Emojis e Negritos) ---
+        self.log_info(f"🔄 **Conectando...** Estabelecendo sessão SSH via porta `{porta}`...")
+
         try:
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -57,10 +72,8 @@ class PadronizarEquipamento(Script):
 
             client.close()
 
+            return f"Processo de padronização concluído para o IP: {ip}"
 
         except Exception as e:
             # Em caso de erro, exibe o problema na tela
             self.log_failure(f"Ocorreu um erro durante a execução: {str(e)}")
-
-        # 3. O retorno da função run() aparece como a "Mensagem Final" do Job na tela do NetBox
-        return f"Processo de padronização concluído para o IP: {ip}"
