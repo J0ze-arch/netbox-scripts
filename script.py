@@ -44,8 +44,6 @@ class PadronizarEquipamento(Script):
         usuario = data.get('username')
         senha = data.get('password')
 
-        self.log_info(f"Iniciando tentativa de conexão em {ip}:{porta} com o usuário '{usuario}'...")
-
         try:
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -59,13 +57,6 @@ class PadronizarEquipamento(Script):
 
             client.close()
 
-            sucesso_na_configuracao = True
-
-            if sucesso_na_configuracao:
-                # 2. Mensagem de sucesso (aparece em verde na interface do NetBox)
-                self.log_success(f"Equipamento padronizado com sucesso!")
-            else:
-                self.log_failure(f"Falha ao aplicar as configurações.")
 
         except Exception as e:
             # Em caso de erro, exibe o problema na tela
