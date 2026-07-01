@@ -29,13 +29,14 @@ class MyScript(Script):
     )
 
     versao = BooleanVar(
-        label='Versão 7',
+        label='RouterOS V7+',
     )
 
     def run(self, data, commit):
 
         diretorio = os.path.dirname(os.path.abspath(__file__))
         diretorioPdr = os.path.join(diretorio, 'scripts/pdr.txt')
+        diretorioPdrV7 = os.path.join(diretorio, 'scripts/pdrv7.txt')
 
         ip = data['ip']
         usuario = data['usuario']
@@ -47,10 +48,22 @@ class MyScript(Script):
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(ip, username=usuario, password=senha, look_for_keys=False, port=int(porta))
 
-        pdr = open(diretorioPdr)
-        pdrLinha = pdr.readlines()
+        if versao == true:
+            
+            pdr = open(diretorioPdrV7)
+            pdrLinha = pdr.readlines()
 
-        for linha in pdrLinha:
-            stdin, stdout, stderr = client.exec_command(linha)
+            for linha in pdrLinha:
+                stdin, stdout, stderr = client.exec_command(linha)
+                
+            client.close
 
-        client.close()
+        else:
+            
+            pdr = open(diretorioPdr)
+            pdrLinha = pdr.readlines()
+    
+            for linha in pdrLinha:
+                stdin, stdout, stderr = client.exec_command(linha)
+    
+            client.close()
