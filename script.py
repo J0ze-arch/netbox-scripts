@@ -1,4 +1,4 @@
-from extras.scripts import Script, StringVar, IntegerVar, BooleanVar
+from extras.scripts import *
 import paramiko
 
 class MyScript(Script):
