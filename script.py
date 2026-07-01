@@ -28,6 +28,11 @@ class MyScript(Script):
         description='Porta de acesso SSH',
     )
 
+    versao = BooleanVar(
+        label='Possui Versao 7',
+        description='Se possui V7',
+    )
+
     def run(self, data, commit):
 
         diretorio = os.path.dirname(os.path.abspath(__file__))
