@@ -1,11 +1,11 @@
-from extras.scripts import Script, StringVar, IntegerVar
+from extras.scripts import Script, StringVar, IntegerVar, BooleanVar
 import paramiko
 
 class MyScript(Script):
     class Meta(Script.Meta):
         name = 'Padronização'
         description = 'Padronizador de equipamentos'
-        field_order = ['ip', 'usuario', 'senha', 'porta']
+        field_order = ['ip', 'usuario', 'senha', 'porta', 'v7']
 
     ip = StringVar(
         label='IP',
@@ -28,6 +28,11 @@ class MyScript(Script):
         description='Porta de acesso SSH',
     )
 
+    v7 = BooleanVar(
+        label = 'Versão 7'
+        description = 'Se o RouterOS está na versão 7'
+    )
+
     def run(self, data, commit):
 
         diretorio = os.path.dirname(os.path.abspath(__file__))
@@ -37,6 +42,7 @@ class MyScript(Script):
         usuario = data['usuario']
         senha = data['senha']
         porta = data['porta']
+        v7 = data['v7']
 
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
