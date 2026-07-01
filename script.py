@@ -29,8 +29,7 @@ class MyScript(Script):
     )
 
     versao = BooleanVar(
-        label='Possui Versao 7',
-        description='Se possui V7',
+        label='Versão 7',
     )
 
     def run(self, data, commit):
@@ -42,6 +41,7 @@ class MyScript(Script):
         usuario = data['usuario']
         senha = data['senha']
         porta = data['porta']
+        versao = data['versao']
 
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
