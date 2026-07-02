@@ -6,7 +6,7 @@ import paramiko
 class MyScript(Script):
     class Meta(Script.Meta):
         name = 'Padronização'
-        description = 'Padronizador de equipamentos (Migração Netmiko)'
+        description = 'Padronizador de equipamentos BrasilNET'
         field_order = ['ip', 'usuario', 'senha', 'porta', 'versao']
 
     ip = StringVar(
