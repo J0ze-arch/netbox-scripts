@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a85c1a6e-81dd-42a9-81cf-fd16331f6573" name="Changes" comment="Nao sei pra que serve isso mas vou commitar">
-      <change afterPath="$PROJECT_DIR$/pdrv7.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a85c1a6e-81dd-42a9-81cf-fd16331f6573" name="Changes" comment="Adicionando script para RouterOS V7">
+      <change beforePath="$PROJECT_DIR$/padronizacao.py" beforeDir="false" afterPath="$PROJECT_DIR$/padronizacao.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +123,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782959128670</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Adicionando script para RouterOS V7">
+      <option name="closed" value="true" />
+      <created>1782959282882</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1782959282882</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -133,6 +140,7 @@
     <MESSAGE value="Aumentando a velocidade da Padronização e aplicando boas práticas com ajuda de IA" />
     <MESSAGE value="Renomeando script.py para padronizacao.py" />
     <MESSAGE value="Nao sei pra que serve isso mas vou commitar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nao sei pra que serve isso mas vou commitar" />
+    <MESSAGE value="Adicionando script para RouterOS V7" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adicionando script para RouterOS V7" />
   </component>
 </project>
