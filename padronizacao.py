@@ -1,6 +1,7 @@
 import os
 from extras.scripts import Script, StringVar, BooleanVar
 from netmiko import ConnectHandler, NetmikoTimeoutException, NetmikoAuthenticationException
+import time
 
 
 class MyScript(Script):
@@ -64,9 +65,25 @@ class MyScript(Script):
 
         try:
             net_connect = ConnectHandler(**device)
-            saida_inicial = net_connect.read_channel()
-            if "Do you want to see the software license" in saida_inicial:
+
+            tela_inicial = net_connect.read_channel()
+
+            if "software license" in tela_inicial or "Enter" in tela_inicial:
+                self.log_info("Equipamento de fábrica detectado. Passando pela licença...")
                 net_connect.write_channel("n\n")
+                time.sleep(1)
+
+                # Envia o "Enter" caso ele peça especificamente
+                net_connect.write_channel("\n")
+                time.sleep(1)
+
+                # Se for RouterOS v7, ele vai pedir senha nova. Podemos setar a mesma do formulário.
+                tela_senha = net_connect.read_channel()
+                if "new password" in tela_senha:
+                    net_connect.write_channel(f"{senha}\n")
+                    time.sleep(1)
+                    net_connect.write_channel(f"{senha}\n")
+                    time.sleep(1)
 
             self.log_success(f"Conexão estabelecida{ip}!")
 
