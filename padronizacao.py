@@ -1,9 +1,6 @@
 import os
-import io
 from extras.scripts import Script, StringVar, BooleanVar
-from netmiko import ConnectHandler, NetmikoTimeoutException, NetmikoAuthenticationException
-from netmiko import redispatch
-import time
+import Paramiko
 
 
 class MyScript(Script):
@@ -42,8 +39,8 @@ class MyScript(Script):
     def run(self, data, commit):
 
         diretorio = os.path.dirname(os.path.abspath(__file__))
-        diretorio_pdr = os.path.join(diretorio, 'scripts/pdr.txt')
-        diretorio_pdrv7 = os.path.join(diretorio, 'scripts/pdrv7.txt')
+        diretorioPdr = os.path.join(diretorio, 'scripts/pdr.txt')
+        diretorioPdrV7 = os.path.join(diretorio, 'scripts/pdrv7.txt')
 
         ip = data['ip']
         usuario = data['usuario']
@@ -51,46 +48,30 @@ class MyScript(Script):
         porta = data['porta']
         versao = data['versao']
 
-        usuario_mikrotik = f"{usuario}+ct"
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(ip, username=usuario, password=senha, look_for_keys=False, port=int(porta))
 
-        device = {
-            'device_type': 'terminal_server',
-            'host': ip,
-            'username': usuario_mikrotik,
-            'password': senha,
-            'port': int(porta),
-        }
+        if versao == true:
 
-        arquivo_script = diretorio_pdrv7 if versao else diretorio_pdr
+            pdr = open(diretorioPdrV7)
+            pdrLinha = pdr.readlines()
 
-        self.log_info(f"Iniciando tentativa de conexão com {ip} na porta {porta}...")
+            for linha in pdrLinha:
+                stdin, stdout, stderr = client.exec_command(linha)
 
-        try:
-            # 1. Conecta sem fazer verificações chatas de Regex
-            net_connect = ConnectHandler(**device)
-            self.log_info("Conexão bruta estabelecida. Executando sua ideia (Ctrl+C)...")
+            client.close()
 
-            import time
+            self.log_success("Equipamento padronizado com sucesso ✅!")
 
-            net_connect.write_channel('\x03')
-            time.sleep(1)
+        else:
 
-            net_connect.write_channel('\n\n')
-            time.sleep(1)
+            pdr = open(diretorioPdr)
+            pdrLinha = pdr.readlines()
 
-            redispatch(net_connect, device_type='mikrotik_routeros')
-            self.log_info("Conexão convertida para MikroTik. Iniciando script...")
+            for linha in pdrLinha:
+                stdin, stdout, stderr = client.exec_command(linha)
 
-            with open(arquivo_script, 'r') as f:
-                comandos_limpos = [linha.replace('\n', '').strip() for linha in f.readlines() if
-                                   linha.replace('\n', '').strip()]
+            client.close()
 
-            output = net_connect.send_config_set(comandos_limpos, read_timeout=90, cmd_verify=False)
-
-            self.log_success("Comandos aplicados com sucesso!")
-            self.log_info(f"Saída do RouterOS:\n{output}")
-
-            net_connect.disconnect()
-
-        except Exception as e:
-            self.log_failure(f"Erro inesperado durante a execução: {str(e)}")
+            self.log_success("Equipamento padronizado com sucesso ✅!")
