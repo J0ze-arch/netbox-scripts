@@ -48,7 +48,6 @@ class MyScript(Script):
         porta = data['porta']
         versao = data['versao']
 
-        # 1. Adicionando as flags +ct para evitar quebra de regex por cores
         usuario_mikrotik = f"{usuario}+ct"
 
         device = {
@@ -57,7 +56,7 @@ class MyScript(Script):
             'username': usuario_mikrotik,
             'password': senha,
             'port': int(porta),
-            'global_delay_factor': 2,  # Dá mais tempo para o equipamento processar os comandos
+            'fast_cli': True,
         }
 
         arquivo_script = diretorio_pdrv7 if versao else diretorio_pdr
