@@ -48,12 +48,16 @@ class MyScript(Script):
         porta = data['porta']
         versao = data['versao']
 
+        # 1. Adicionando as flags +ct para evitar quebra de regex por cores
+        usuario_mikrotik = f"{usuario}+ct"
+
         device = {
             'device_type': 'mikrotik_routeros',
             'host': ip,
-            'username': usuario,
+            'username': usuario_mikrotik,
             'password': senha,
             'port': int(porta),
+            'global_delay_factor': 2,  # Dá mais tempo para o equipamento processar os comandos
         }
 
         arquivo_script = diretorio_pdrv7 if versao else diretorio_pdr
@@ -66,18 +70,23 @@ class MyScript(Script):
 
             self.log_info(f"Lendo e aplicando o script: {arquivo_script}")
 
-            output = net_connect.send_config_from_file(arquivo_script)
+            # Se o script alterar o hostname, o Netmiko perde o prompt.
+            # Para evitar isso, lemos o arquivo e enviamos comando por comando,
+            # avisando o Netmiko para ser menos rigoroso com o prompt de retorno.
+            with open(arquivo_script, 'r') as f:
+                comandos = f.readlines()
+
+            # Remove quebras de linha e comandos vazios
+            comandos_limpos = [cmd.strip() for cmd in comandos if cmd.strip()]
+
+            # send_config_set é mais robusto para scripts que alteram o prompt
+            output = net_connect.send_config_set(comandos_limpos, read_timeout=90)
 
             self.log_success("Comandos aplicados com sucesso!")
-
             self.log_info(f"Saída do terminal RouterOS:\n{output}")
 
             net_connect.disconnect()
             self.log_info("Sessão SSH encerrada.")
 
-        except NetmikoAuthenticationException:
-            self.log_failure(f"Falha de autenticação no IP {ip}. Verifique usuário e senha.")
-        except NetmikoTimeoutException:
-            self.log_failure(f"Timeout. Não foi possível alcançar o IP {ip} na porta {porta}.")
         except Exception as e:
-            self.log_failure(f"Ocorreu um erro inesperado durante a execução: {str(e)}")
+            self.log_failure(f"Ocorreu um erro durante a execução: {str(e)}")
