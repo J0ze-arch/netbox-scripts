@@ -70,17 +70,12 @@ class MyScript(Script):
 
             self.log_info(f"Lendo e aplicando o script: {arquivo_script}")
 
-            # Se o script alterar o hostname, o Netmiko perde o prompt.
-            # Para evitar isso, lemos o arquivo e enviamos comando por comando,
-            # avisando o Netmiko para ser menos rigoroso com o prompt de retorno.
             with open(arquivo_script, 'r') as f:
                 comandos = f.readlines()
 
-            # Remove quebras de linha e comandos vazios
             comandos_limpos = [cmd.strip() for cmd in comandos if cmd.strip()]
 
-            # send_config_set é mais robusto para scripts que alteram o prompt
-            output = net_connect.send_config_set(comandos_limpos, read_timeout=90)
+            output = net_connect.send_config_set(comandos_limpos, read_timeout=90, cmd_verify=False)
 
             self.log_success("Comandos aplicados com sucesso!")
             self.log_info(f"Saída do terminal RouterOS:\n{output}")
