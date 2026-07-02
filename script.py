@@ -66,9 +66,9 @@ class MyScript(Script):
 
         try:
             net_connect = ConnectHandler(**device)
-            self.log_success(f"Conexão SSH estabelecida com sucesso em {ip}!")
+            self.log_success(f"Conexão estabelecida{ip}!")
 
-            self.log_info(f"Lendo e aplicando o script: {arquivo_script}")
+            self.log_info(f"Padronizando...")
 
             with open(arquivo_script, 'r') as f:
                 comandos = f.readlines()
@@ -77,11 +77,9 @@ class MyScript(Script):
 
             output = net_connect.send_config_set(comandos_limpos, read_timeout=90, cmd_verify=False)
 
-            self.log_success("Comandos aplicados com sucesso!")
-            self.log_info(f"Saída do terminal RouterOS:\n{output}")
+            self.log_success("Equipamento padronizado!")
 
             net_connect.disconnect()
-            self.log_info("Sessão SSH encerrada.")
 
         except Exception as e:
             self.log_failure(f"Ocorreu um erro durante a execução: {str(e)}")
