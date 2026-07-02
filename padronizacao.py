@@ -1,6 +1,6 @@
 import os
 from extras.scripts import Script, StringVar, BooleanVar
-import Paramiko
+import paramiko
 
 
 class MyScript(Script):
