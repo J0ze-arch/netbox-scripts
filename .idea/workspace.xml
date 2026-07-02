@@ -164,7 +164,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782960648637</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Resolvendo problemas de visualização de licensa no routerOS">
+      <option name="closed" value="true" />
+      <created>1782960896547</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1782960896547</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

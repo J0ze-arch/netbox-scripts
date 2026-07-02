@@ -1,4 +1,5 @@
 import os
+import io
 from extras.scripts import Script, StringVar, BooleanVar
 from netmiko import ConnectHandler, NetmikoTimeoutException, NetmikoAuthenticationException
 import time
@@ -51,6 +52,8 @@ class MyScript(Script):
 
         usuario_mikrotik = f"{usuario}+ct"
 
+        log_stream = io.StringIO()
+
         device = {
             'device_type': 'mikrotik_routeros',
             'host': ip,
@@ -59,11 +62,16 @@ class MyScript(Script):
             'port': int(porta),
             'global_delay_factor': 4,
             'session_timeout': 60,
+            'timeout': 60,  # Tempo máximo aguardando o socket
+            'auth_timeout': 60,  # Tempo máximo aguardando autenticação
+            'banner_timeout': 60,  # Tempo máximo para passar de avisos/banners
+            'session_log': log_stream,
         }
 
         arquivo_script = diretorio_pdrv7 if versao else diretorio_pdr
 
         self.log_info(f"Iniciando tentativa de conexão com {ip} na porta {porta}...")
+
 
         try:
             net_connect = ConnectHandler(**device)
@@ -103,4 +111,8 @@ class MyScript(Script):
             net_connect.disconnect()
 
         except Exception as e:
+            tela_do_mikrotik = log_stream.getvalue()
+            self.log_failure(
+                f"O Netmiko falhou ao ler o prompt. Veja o que o MikroTik respondeu:\n\n{tela_do_mikrotik}")
             self.log_failure(f"Ocorreu um erro durante a execução: {str(e)}")
+            self.log_failure(f"Erro original: {str(e)}")
