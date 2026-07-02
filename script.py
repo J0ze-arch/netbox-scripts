@@ -1,11 +1,13 @@
-from extras.scripts import Script, StringVar, IntegerVar, BooleanVar
-import paramiko
+import os
+from extras.scripts import Script, StringVar, BooleanVar
+from netmiko import ConnectHandler, NetmikoTimeoutException, NetmikoAuthenticationException
+
 
 class MyScript(Script):
     class Meta(Script.Meta):
         name = 'Padronização'
-        description = 'Padronizador de equipamentos'
-        field_order = ['ip', 'usuario', 'senha', 'porta', 'v7']
+        description = 'Padronizador de equipamentos (Migração Netmiko)'
+        field_order = ['ip', 'usuario', 'senha', 'porta', 'versao']
 
     ip = StringVar(
         label='IP',
@@ -13,8 +15,8 @@ class MyScript(Script):
     )
 
     usuario = StringVar(
-        label='Usuario',
-        description='Insira o usuário',
+        label='Usuário',
+        description='Insira o usuário (ex: admin)',
     )
 
     senha = StringVar(
@@ -26,44 +28,56 @@ class MyScript(Script):
     porta = StringVar(
         label='Porta',
         description='Porta de acesso SSH',
+        default='22'
     )
 
     versao = BooleanVar(
         label='RouterOS V7+',
+        description='Marque se o equipamento estiver rodando RouterOS v7 ou superior'
     )
 
     def run(self, data, commit):
 
         diretorio = os.path.dirname(os.path.abspath(__file__))
-        diretorioPdr = os.path.join(diretorio, 'scripts/pdr.txt')
-        diretorioPdrV7 = os.path.join(diretorio, 'scripts/pdrv7.txt')
+        diretorio_pdr = os.path.join(diretorio, 'scripts/pdr.txt')
+        diretorio_pdrv7 = os.path.join(diretorio, 'scripts/pdrv7.txt')
 
         ip = data['ip']
         usuario = data['usuario']
-        senha = data['senha']
+        senha = data.get('senha', '')
         porta = data['porta']
         versao = data['versao']
 
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(ip, username=usuario, password=senha, look_for_keys=False, port=int(porta))
+        device = {
+            'device_type': 'mikrotik_routeros',
+            'host': ip,
+            'username': usuario,
+            'password': senha,
+            'port': int(porta),
+        }
 
-        if versao == true:
-            
-            pdr = open(diretorioPdrV7)
-            pdrLinha = pdr.readlines()
+        arquivo_script = diretorio_pdrv7 if versao else diretorio_pdr
 
-            for linha in pdrLinha:
-                stdin, stdout, stderr = client.exec_command(linha)
-                
-            client.close
+        self.log_info(f"Iniciando tentativa de conexão com {ip} na porta {porta}...")
 
-        else:
-            
-            pdr = open(diretorioPdr)
-            pdrLinha = pdr.readlines()
-    
-            for linha in pdrLinha:
-                stdin, stdout, stderr = client.exec_command(linha)
-    
-            client.close()
+        try:
+            net_connect = ConnectHandler(**device)
+            self.log_success(f"Conexão SSH estabelecida com sucesso em {ip}!")
+
+            self.log_info(f"Lendo e aplicando o script: {arquivo_script}")
+
+            output = net_connect.send_config_from_file(arquivo_script)
+
+            self.log_success("Comandos aplicados com sucesso!")
+
+            self.log_info(f"Saída do terminal RouterOS:\n{output}")
+
+            net_connect.disconnect()
+            self.log_info("Sessão SSH encerrada.")
+
+        except NetmikoAuthenticationException:
+            self.log_failure(f"Falha de autenticação no IP {ip}. Verifique usuário e senha.")
+        except NetmikoTimeoutException:
+            self.log_failure(f"Timeout. Não foi possível alcançar o IP {ip} na porta {porta}.")
+        except Exception as e:
+            self.log_failure(f"Ocorreu um erro inesperado durante a execução: {str(e)}")
