@@ -64,6 +64,10 @@ class MyScript(Script):
 
         try:
             net_connect = ConnectHandler(**device)
+            saida_inicial = net_connect.read_channel()
+            if "Do you want to see the software license" in saida_inicial:
+                net_connect.write_channel("n\n")
+
             self.log_success(f"Conexão estabelecida{ip}!")
 
             self.log_info(f"Padronizando...")
