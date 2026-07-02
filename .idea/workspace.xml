@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a85c1a6e-81dd-42a9-81cf-fd16331f6573" name="Changes" comment="Resolvendo problemas de visualização de licensa no routerOS">
+    <list default="true" id="a85c1a6e-81dd-42a9-81cf-fd16331f6573" name="Changes" comment="Nao aguento mais">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/padronizacao.py" beforeDir="false" afterPath="$PROJECT_DIR$/padronizacao.py" afterDir="false" />
     </list>
@@ -172,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782960896547</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Nao aguento mais">
+      <option name="closed" value="true" />
+      <created>1782963063361</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1782963063361</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -183,6 +191,7 @@
     <MESSAGE value="Nao sei pra que serve isso mas vou commitar" />
     <MESSAGE value="Adicionando script para RouterOS V7" />
     <MESSAGE value="Resolvendo problemas de visualização de licensa no routerOS" />
-    <option name="LAST_COMMIT_MESSAGE" value="Resolvendo problemas de visualização de licensa no routerOS" />
+    <MESSAGE value="Nao aguento mais" />
+    <option name="LAST_COMMIT_MESSAGE" value="Nao aguento mais" />
   </component>
 </project>

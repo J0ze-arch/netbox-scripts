@@ -2,6 +2,7 @@ import os
 import io
 from extras.scripts import Script, StringVar, BooleanVar
 from netmiko import ConnectHandler, NetmikoTimeoutException, NetmikoAuthenticationException
+from netmiko import redispatch
 import time
 
 
@@ -52,67 +53,44 @@ class MyScript(Script):
 
         usuario_mikrotik = f"{usuario}+ct"
 
-        log_stream = io.StringIO()
-
         device = {
-            'device_type': 'mikrotik_routeros',
+            'device_type': 'terminal_server',
             'host': ip,
             'username': usuario_mikrotik,
             'password': senha,
             'port': int(porta),
-            'global_delay_factor': 4,
-            'session_timeout': 60,
-            'timeout': 60,  # Tempo máximo aguardando o socket
-            'auth_timeout': 60,  # Tempo máximo aguardando autenticação
-            'banner_timeout': 60,  # Tempo máximo para passar de avisos/banners
-            'session_log': log_stream,
         }
 
         arquivo_script = diretorio_pdrv7 if versao else diretorio_pdr
 
         self.log_info(f"Iniciando tentativa de conexão com {ip} na porta {porta}...")
 
-
         try:
+            # 1. Conecta sem fazer verificações chatas de Regex
             net_connect = ConnectHandler(**device)
+            self.log_info("Conexão bruta estabelecida. Executando sua ideia (Ctrl+C)...")
 
-            tela_inicial = net_connect.read_channel()
+            import time
 
-            if "software license" in tela_inicial or "Enter" in tela_inicial:
-                self.log_info("Equipamento de fábrica detectado. Passando pela licença...")
-                net_connect.write_channel("n\n")
-                time.sleep(1)
+            net_connect.write_channel('\x03')
+            time.sleep(1)
 
-                # Envia o "Enter" caso ele peça especificamente
-                net_connect.write_channel("\n")
-                time.sleep(1)
+            net_connect.write_channel('\n\n')
+            time.sleep(1)
 
-                # Se for RouterOS v7, ele vai pedir senha nova. Podemos setar a mesma do formulário.
-                tela_senha = net_connect.read_channel()
-                if "new password" in tela_senha:
-                    net_connect.write_channel(f"{senha}\n")
-                    time.sleep(1)
-                    net_connect.write_channel(f"{senha}\n")
-                    time.sleep(1)
-
-            self.log_success(f"Conexão estabelecida{ip}!")
-
-            self.log_info(f"Padronizando...")
+            redispatch(net_connect, device_type='mikrotik_routeros')
+            self.log_info("Conexão convertida para MikroTik. Iniciando script...")
 
             with open(arquivo_script, 'r') as f:
-                comandos = f.readlines()
-
-            comandos_limpos = [cmd.strip() for cmd in comandos if cmd.strip()]
+                comandos_limpos = [linha.replace('\n', '').strip() for linha in f.readlines() if
+                                   linha.replace('\n', '').strip()]
 
             output = net_connect.send_config_set(comandos_limpos, read_timeout=90, cmd_verify=False)
 
-            self.log_success("Equipamento padronizado!")
+            self.log_success("Comandos aplicados com sucesso!")
+            self.log_info(f"Saída do RouterOS:\n{output}")
 
             net_connect.disconnect()
 
         except Exception as e:
-            tela_do_mikrotik = log_stream.getvalue()
-            self.log_failure(
-                f"O Netmiko falhou ao ler o prompt. Veja o que o MikroTik respondeu:\n\n{tela_do_mikrotik}")
-            self.log_failure(f"Ocorreu um erro durante a execução: {str(e)}")
-            self.log_failure(f"Erro original: {str(e)}")
+            self.log_failure(f"Erro inesperado durante a execução: {str(e)}")
