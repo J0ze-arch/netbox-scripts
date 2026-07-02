@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a85c1a6e-81dd-42a9-81cf-fd16331f6573" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/script.py" beforeDir="false" afterPath="$PROJECT_DIR$/script.py" afterDir="false" />
+    <list default="true" id="a85c1a6e-81dd-42a9-81cf-fd16331f6573" name="Changes" comment="Aumentando a velocidade da Padronização e aplicando boas práticas com ajuda de IA">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +15,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "J0ze-arch"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/J0ze-arch/netbox-scripts.git",
+    "accountId": "88afe042-4dcf-490d-a99d-8ae04ca0944e"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -23,16 +35,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.scratch_2.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Python"
+    ]
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -48,6 +67,53 @@
       <option name="presentableId" value="Default" />
       <updated>1779381753746</updated>
     </task>
+    <task id="LOCAL-00001" summary="Substituindo a biblioteca Paramiko pela Netmiko&#10;&#10;Código refatorado com IA&#10;&#10;Tratamento de erros">
+      <option name="closed" value="true" />
+      <created>1782953062685</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1782953062685</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Corrigindo erros com IA">
+      <option name="closed" value="true" />
+      <created>1782954212709</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1782954212709</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Corrigindo erros com IA">
+      <option name="closed" value="true" />
+      <created>1782955263225</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1782955263225</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Corrigindo erros com IA">
+      <option name="closed" value="true" />
+      <created>1782955588323</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1782955588323</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Aumentando a velocidade da Padronização e aplicando boas práticas com ajuda de IA">
+      <option name="closed" value="true" />
+      <created>1782957406341</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1782957406341</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Substituindo a biblioteca Paramiko pela Netmiko&#10;&#10;Código refatorado com IA&#10;&#10;Tratamento de erros" />
+    <MESSAGE value="Corrigindo erros com IA" />
+    <MESSAGE value="Aumentando a velocidade da Padronização e aplicando boas práticas com ajuda de IA" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aumentando a velocidade da Padronização e aplicando boas práticas com ajuda de IA" />
   </component>
 </project>
