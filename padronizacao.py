@@ -57,6 +57,7 @@ class MyScript(Script):
             'username': usuario_mikrotik,
             'password': senha,
             'port': int(porta),
+            'global_delay_factor': 2,
         }
 
         arquivo_script = diretorio_pdrv7 if versao else diretorio_pdr
